@@ -1,0 +1,24 @@
+{
+  "originHash" : "da806bdf52ba6fd44750d1cce64fc9f294a161076e4c0fcbc867f78cdb66d1eb",
+  "pins" : [
+    {
+      "identity" : "pendo-mobile-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pendo-io/pendo-mobile-ios.git",
+      "state" : {
+        "revision" : "c7f60643e11dff1fa7968718709fe56bec27b732",
+        "version" : "2.22.6"
+      }
+    },
+    {
+      "identity" : "taanalytics",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:TechArtists/TAAnalytics.git",
+      "state" : {
+        "revision" : "a344af269d4b111fabd4d0de8914965458ee4df4",
+        "version" : "1.0.2"
+      }
+    }
+  ],
+  "version" : 3
+}
