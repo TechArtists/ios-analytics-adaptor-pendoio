@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
 
 import TAAnalytics
 
