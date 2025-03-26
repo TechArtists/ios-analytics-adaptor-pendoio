@@ -24,26 +24,30 @@ SOFTWARE.
 
 
 import TAAnalytics
-
 import Pendo
 
 /// Sends messages to Pendo Analytics about analytics events & user properties.
-public class PendoAnalyticsConsumer: AnalyticsConsumer, AnalyticsConsumerWithWriteOnlyUserID {
+public class PendoIOAnalyticsConsumer: AnalyticsConsumer {
 
-    public typealias T = PendoAnalyticsConsumer
+    public typealias T = PendoManager
 
+    private let sdkKey: String
     private let enabledInstallTypes: [TAAnalyticsConfig.InstallType]
-    private let appKey: String
+    private let isRedacted: Bool
 
-    // MARK: AnalyticsConsumer
+    // MARK: - Init
 
-    /// - Parameters:
-    ///   - isRedacted: If parameter & user property values should be redacted.
-    ///   - enabledInstallTypes: Install types for which the consumer is enabled.
-    init(appKey: String, enabledInstallTypes: [TAAnalyticsConfig.InstallType]) {
-        self.appKey = appKey
+    public init(
+        enabledInstallTypes: [TAAnalyticsConfig.InstallType] = TAAnalyticsConfig.InstallType.allCases,
+        isRedacted: Bool = true,
+        sdkKey: String
+    ) {
+        self.sdkKey = sdkKey
         self.enabledInstallTypes = enabledInstallTypes
+        self.isRedacted = isRedacted
     }
+
+    // MARK: - AnalyticsConsumer
 
     public func startFor(
         installType: TAAnalyticsConfig.InstallType,
@@ -54,12 +58,10 @@ public class PendoAnalyticsConsumer: AnalyticsConsumer, AnalyticsConsumerWithWri
             throw InstallTypeError.invalidInstallType
         }
 
-        PendoManager.shared().setup(appKey)
+        PendoManager.shared().setup(sdkKey)
     }
 
-    public func track(trimmedEvent: TrimmedEvent, params: [String: AnalyticsBaseParameterValue]?) {
-        let event = trimmedEvent.event
-        
+    public func track(trimmedEvent: EventAnalyticsModelTrimmed, params: [String: any AnalyticsBaseParameterValue]?) {
         var eventProperties = [String: Any]()
         if let params = params {
             for (key, value) in params {
@@ -67,44 +69,28 @@ public class PendoAnalyticsConsumer: AnalyticsConsumer, AnalyticsConsumerWithWri
             }
         }
 
-        // Track the event in Pendo
-        PendoManager.shared().track(event.rawValue, properties: eventProperties)
+        PendoManager.shared().track(trimmedEvent.rawValue, properties: eventProperties)
     }
 
-    public func set(trimmedUserProperty: TrimmedUserProperty, to: String?) {
-        let userPropertyKey = trimmedUserProperty.userProperty.rawValue
-        
+    public func set(trimmedUserProperty: UserPropertyAnalyticsModelTrimmed, to: String?) {
+        let key = trimmedUserProperty.rawValue
+
         if let value = to {
-            // Set user properties in Pendo
-            let userInfo: [String: String] = [userPropertyKey: value]
-            PendoManager.shared().setVisitorData(userInfo)
+            PendoManager.shared().setVisitorData([key: value])
         } else {
-            // Handle the removal of the property if necessary
-            PendoManager.shared().setVisitorData([userPropertyKey: NSNull()])
+            PendoManager.shared().setVisitorData([key: NSNull()])
         }
     }
 
-    public func trim(event: AnalyticsEvent) -> TrimmedEvent {
-        // Pendo doesn't have strict event name limits, but you can enforce one.
-        let trimmedEventName = event.rawValue.ob_trim(type: "event", toLength: 40)
-        return TrimmedEvent(trimmedEventName)
+    public func trim(event: EventAnalyticsModel) -> EventAnalyticsModelTrimmed {
+        EventAnalyticsModelTrimmed(event.rawValue.ta_trim(toLength: 40, debugType: "event"))
     }
 
-    public func trim(userProperty: AnalyticsUserProperty) -> TrimmedUserProperty {
-        // Pendo doesn't have strict user property key limits, but you can enforce one.
-        let trimmedUserPropertyKey = userProperty.rawValue.ob_trim(type: "user property", toLength: 24)
-        return TrimmedUserProperty(trimmedUserPropertyKey)
+    public func trim(userProperty: UserPropertyAnalyticsModel) -> UserPropertyAnalyticsModelTrimmed {
+        UserPropertyAnalyticsModelTrimmed(userProperty.rawValue.ta_trim(toLength: 24, debugType: "user property"))
     }
 
-    public var wrappedValue: Self {
-        return self
-    }
-
-    // MARK: AnalyticsConsumerWithWriteOnlyUserID
-
-    public func set(userID: String?) {
-        if let userID = userID {
-           
-        }
+    public var wrappedValue: T {
+        PendoManager.shared()
     }
 }

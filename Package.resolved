@@ -1,5 +1,5 @@
 {
-  "originHash" : "da806bdf52ba6fd44750d1cce64fc9f294a161076e4c0fcbc867f78cdb66d1eb",
+  "originHash" : "7b7494b59364e2ed6b68391c4156714f401fbc878f5678976eb51f0998ff2e6c",
   "pins" : [
     {
       "identity" : "pendo-mobile-ios",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "git@github.com:TechArtists/TAAnalytics.git",
       "state" : {
-        "revision" : "a344af269d4b111fabd4d0de8914965458ee4df4",
-        "version" : "1.0.2"
+        "revision" : "1409bc6ea7ae77cd82b949ae569e9c4b25fcfb7d",
+        "version" : "0.9.6"
       }
     }
   ],
