@@ -27,7 +27,7 @@ import TAAnalytics
 import Pendo
 
 /// Sends messages to Pendo Analytics about analytics events & user properties.
-public class PendoIOAnalyticsConsumer: AnalyticsConsumer {
+public class PendoIOAnalyticsAdaptor: AnalyticsAdaptor {
 
     public typealias T = PendoManager
 
@@ -47,7 +47,7 @@ public class PendoIOAnalyticsConsumer: AnalyticsConsumer {
         self.isRedacted = isRedacted
     }
 
-    // MARK: - AnalyticsConsumer
+    // MARK: - AnalyticsAdaptor
 
     public func startFor(
         installType: TAAnalyticsConfig.InstallType,

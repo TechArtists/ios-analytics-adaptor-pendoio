@@ -28,13 +28,13 @@ SOFTWARE.
 import PackageDescription
 
 let package = Package(
-    name: "PendoIOAnalyticsConsumer",
+    name: "PendoIOAnalyticsAdaptor",
     platforms: [.iOS(.v15), .macOS(.v10_13)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "PendoIOAnalyticsConsumer",
-            targets: ["PendoIOAnalyticsConsumer"])
+            name: "PendoIOAnalyticsAdaptor",
+            targets: ["PendoIOAnalyticsAdaptor"])
     ],
     dependencies: [
        .package(
@@ -50,15 +50,15 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-           name: "PendoIOAnalyticsConsumer",
+           name: "PendoIOAnalyticsAdaptor",
            dependencies: [
                .product(name: "Pendo", package: "pendo-mobile-ios"),
                .product(name: "TAAnalytics", package: "TAAnalytics")
            ]
        ),
         .testTarget(
-            name: "PendoIOAnalyticsConsumerTests",
-            dependencies: ["PendoIOAnalyticsConsumer"]
+            name: "PendoIOAnalyticsAdaptorTests",
+            dependencies: ["PendoIOAnalyticsAdaptor"]
         )
     ]
 )
