@@ -43,7 +43,7 @@ let package = Package(
        ),
        .package(
            url: "git@github.com:TechArtists/TAAnalytics.git",
-           from: "0.9.0"
+           from: "1.0.0"
        )
    ],
     targets: [
